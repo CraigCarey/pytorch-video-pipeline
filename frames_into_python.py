@@ -6,17 +6,20 @@ from gi.repository import Gst
 frame_format = 'RGBA'
 
 Gst.init()
+
 pipeline = Gst.parse_launch(f'''
     filesrc location=media/in.mp4 num-buffers=200 !
     decodebin !
     fakesink name=s
 ''')
 
+# Called for every frame processed
 def on_frame_probe(pad, info):
     buf = info.get_buffer()
     print(f'[{buf.pts / Gst.SECOND:6.2f}]')
     return Gst.PadProbeReturn.OK
 
+# Install the probe callback
 pipeline.get_by_name('s').get_static_pad('sink').add_probe(
     Gst.PadProbeType.BUFFER,
     on_frame_probe

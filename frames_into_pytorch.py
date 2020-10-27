@@ -7,7 +7,8 @@ import torch, torchvision
 
 frame_format, pixel_bytes = 'RGBA', 4
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-detector = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd', model_math='fp32').eval().to(device)
+precision = 'fp32'
+detector = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_ssd', model_math=precision).eval().to(device)
 preprocess = torchvision.transforms.ToTensor()
 
 Gst.init()
